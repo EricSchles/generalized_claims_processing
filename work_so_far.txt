@@ -1,0 +1,53 @@
+The generalized data processing framework leverages a data model and process queueing ideas.  The essense of the model is simple - we treat work as a simple and obvious structure over time.
+
+The structure takes the form of a discrete graph, where work is performed in discrete units.  Depending on the data collection mechanisms at work, we will have a different level of granularity into the work queueing system.  
+
+The model is quiet simple, a number of discrete nodes are modeled, each one representing a task, a worker, or a process (defined as a set of tasks that happen sequentially), whatever level of granularity can be achieved.  This model assumes one of the three previous mentioned task types is available.  From there a productivity metric is defined - the amount of time it takes to perform a task, or process.  From there the model goes to work, analyzing the data over a number of visual representations:
+
+Bar charts and Pie charts:
+
+The big picture - This is used to give a static or stock view of the data.  Telling how many claims are currently queued in each part of the process. 
+
+The categorical - This is used to give a sense of different types of claims in a specific piece of the process, with the current amount of each type.
+
+
+Algorithms to employ:
+
+k-means - On top of this data representation we employ k-means clustering, to:
+
+- determine where new claims should be moved next in the process.  
+- to look at features of the data, like claims that take a very long time, claims that don't take very long, claims based on where they are coming from, etc. 
+
+AdaBoost - does the same thing as k-means better for classification of current results.
+K nearest neighbors - same as adaboost and k-means
+CART - same as adaboost, k-means, and k nearest neighbors
+
+SVM - We can use support vector machines to predict how the categories of claims will change over the next 30 days, 60 days, 90 days, 6 months, and year.
+
+Apriori - The apriori algorithm learns the connections in the data - we can figure out what association rules exist between certain types of claims, or features of certain types of claims.
+
+EM - looks for missing or lost data.  The EM algorithm looks at how data was in the past and tries to determine if any data might be missing in the present.  By continuously applying the EM algorithm, we can see if the claims process is missing any data in the present.
+
+Timeseries plots:
+
+The big picture - This visualization tracks overall time from start of the claims process to it's conclusion.  The x-axis is date, the y-axis is the total duration a claim took to pass through the system.  Here the date represents the date the case was completed.  So cases don't appear in this chart until they are complete.  The rolling average is super imposed on this graph to give a sense of how long, in a given month each case takes to complete.  
+
+The individual picture - This visualization tracks cases currently in each part of the queue, with their total number of days to today's date.  So if a claim is completed during that month, it will no longer accumulate in the y-axis.  But if it's still active, each day, it will increase by that day.  The rolling average is super imposed over each of these, with a 30 day sliding window, to give a sense of how long, on average cases take to complete.  
+
+Algorthims to employ:
+
+ARIMA model - use this to predict how many claims to expect over the next 30 days, 60 days, 90 days, six months, year.
+
+Vector autoregression - use this to predict based on a heterogenous number of variables how we can reduce claims processing from a policy prospective.  
+
+Discrete graph visualization:
+
+We model each part of a process as a task.  We then set a each task as a discrete node in a discrete graph.  The edges of the graph are where the claims in the process go after completing processing.  Each node captures the central tendency of the process or task and each edge captures the probability that a task goes to a connected task.  In this way we can feed this graph into a shortest path algorithm.
+
+From there we can see as the output of this algorithm, which claims passed through this shortest path and which claims passed through longer paths.  From there we can drill down into why these claims took longer time to be processed applying, k-means clustering, adaboosting, or K nearest neighbors.  Once we've learned features about these claims or inspected semantic information about them, we can make a determination about when the process is working well and when it's working poorly.  And more importantly why.
+
+This technique in particular works in a general purpose setting and can be useful for a number of specifics.  
+
+
+
+
